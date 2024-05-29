@@ -40,7 +40,7 @@ function App() {
             key={index}
             justifyContent="space-between"
             bg="2D3748"
-            p={3}
+            p={1}
             borderRadius="md"
           >
             <Checkbox
