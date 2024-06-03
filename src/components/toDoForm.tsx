@@ -1,6 +1,7 @@
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 import { ITodo } from "../interface";
 import { useState } from "react";
+import { toDoFormBoxStyle } from "../style";
 
 export default function ToDoForm({
   todos,
@@ -29,15 +30,7 @@ export default function ToDoForm({
 
   return (
     <div>
-      <Box
-        sx={{
-          mt: 4,
-          borderColor: "#808080",
-          borderStyle: "solid",
-          borderWidth: "1px",
-          maxW: "100vw",
-        }}
-      />
+      <Box sx={toDoFormBoxStyle} />
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Text as="b" sx={{ fontSize: "2xl", mt: 4 }}>
           Done: {count}

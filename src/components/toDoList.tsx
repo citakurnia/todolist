@@ -1,6 +1,7 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Checkbox, HStack, IconButton, VStack, Text } from "@chakra-ui/react";
 import { ITodo } from "../interface";
+import { iconStyle } from "../style";
 
 export default function ToDoList({
   todos,
@@ -54,13 +55,7 @@ export default function ToDoList({
             aria-label="Delete task"
             icon={<DeleteIcon />}
             colorScheme="red"
-            sx={{
-              bgColor: "#1a202c",
-              color: "#fdb1b1",
-              borderColor: "#fdb1b1",
-              borderStyle: "solid",
-              borderWidth: "1px",
-            }}
+            sx={iconStyle}
           />
         </HStack>
       ))}

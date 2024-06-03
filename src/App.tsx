@@ -3,23 +3,14 @@ import { useState } from "react";
 import { ITodo } from "./interface";
 import ToDoList from "./components/toDoList";
 import ToDoForm from "./components/toDoForm";
+import { layoutStyle } from "./style";
 
 function App() {
   const [count, setCount] = useState<number>(0);
   const [todos, setTodos] = useState<ITodo[]>([]);
 
   return (
-    <Box
-      sx={{
-        bgColor: "#1a202c",
-        w: "100vw",
-        h: "100vh",
-        p: 4,
-        color: "white",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <Box sx={layoutStyle}>
       <Text as="b" sx={{ fontSize: "2xl", textAlign: "center" }}>
         Chores ToDo List
       </Text>
