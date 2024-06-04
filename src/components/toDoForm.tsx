@@ -1,6 +1,6 @@
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 import { ITodo } from "../interface";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toDoFormBoxStyle } from "../style";
 
 export default function ToDoForm({
@@ -12,18 +12,37 @@ export default function ToDoForm({
   setTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
   count: number;
 }) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [input, setInput] = useState<string>("");
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus();
+  }, []);
+
+  const inputToEmptyString = () => {
+    if (inputRef.current && inputRef.current.value) {
+      inputRef.current.value = "";
+    }
+    inputRef.current?.focus();
+  };
+
   const updateTodos = () => {
-    if (input) {
-      let isDup: boolean = false;
+    const regSpace = /^\s*$/;
+    if (input.match(regSpace)) {
+      alert("Please enter a valid input");
+    }
+
+    const inputTrim = input.trim();
+    if (inputTrim) {
+      let isDup = false;
       todos.forEach((item) => {
-        if (item.todo.toLowerCase() == input.toLowerCase()) {
+        if (item.todo.toLowerCase() == inputTrim.toLowerCase()) {
           isDup = true;
           alert("Task has already input");
         }
       });
       if (!isDup) {
-        setTodos([...todos, { todo: input, isChecked: false }]);
+        setTodos([...todos, { todo: inputTrim, isChecked: false }]);
       }
     }
   };
@@ -40,6 +59,7 @@ export default function ToDoForm({
         <VStack sx={{ alignItems: "flex-start" }}>
           <Text sx={{ fontSize: "sm", mt: 4 }}>Add todo</Text>
           <Input
+            ref={inputRef}
             onChange={(e) => setInput(e.target.value)}
             sx={{
               py: "5px",
@@ -48,7 +68,13 @@ export default function ToDoForm({
               flex: "1",
             }}
           />
-          <Button onClick={updateTodos} sx={{ bgColor: "skyblue", mt: 2 }}>
+          <Button
+            onClick={() => {
+              updateTodos();
+              inputToEmptyString();
+            }}
+            sx={{ bgColor: "skyblue", mt: 2 }}
+          >
             <Text sx={{ color: "black" }}>ADD TASK</Text>
           </Button>
         </VStack>
