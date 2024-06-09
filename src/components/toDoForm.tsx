@@ -1,51 +1,50 @@
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
-import { ITodo } from "../interface";
+import { Todo } from "../interface";
 import { useEffect, useRef, useState } from "react";
 import { toDoFormBoxStyle } from "../style";
 
-export default function ToDoForm({
+export default function TodoForm({
   todos,
   setTodos,
   count,
 }: {
-  todos: ITodo[];
-  setTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   count: number;
 }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, []);
 
-  const inputToEmptyString = () => {
-    if (inputRef.current && inputRef.current.value) {
-      inputRef.current.value = "";
-    }
-    inputRef.current?.focus();
-  };
-
-  const updateTodos = () => {
-    const regSpace = /^\s*$/;
-    if (input.match(regSpace)) {
-      alert("Please enter a valid input");
-    }
-
+  function handleOnClick() {
+    // Update todos
     const inputTrim = input.trim();
-    if (inputTrim) {
+
+    if (inputTrim.length > 0) {
       let isDup = false;
       todos.forEach((item) => {
-        if (item.todo.toLowerCase() == inputTrim.toLowerCase()) {
+        if (item.content.toLowerCase() == inputTrim.toLowerCase()) {
           isDup = true;
           alert("Task has already input");
         }
       });
+
       if (!isDup) {
-        setTodos([...todos, { todo: inputTrim, isChecked: false }]);
+        setTodos([...todos, { content: inputTrim, isChecked: false }]);
       }
+    } else {
+      alert("Please enter a valid input");
     }
-  };
+
+    // Reset input
+    if (inputRef.current !== null) {
+      inputRef.current.value = "";
+    }
+    inputRef.current?.focus();
+  }
 
   return (
     <div>
@@ -68,13 +67,7 @@ export default function ToDoForm({
               flex: "1",
             }}
           />
-          <Button
-            onClick={() => {
-              updateTodos();
-              inputToEmptyString();
-            }}
-            sx={{ bgColor: "skyblue", mt: 2 }}
-          >
+          <Button onClick={handleOnClick} sx={{ bgColor: "skyblue", mt: 2 }}>
             <Text sx={{ color: "black" }}>ADD TASK</Text>
           </Button>
         </VStack>

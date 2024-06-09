@@ -1,57 +1,57 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Checkbox, HStack, IconButton, VStack, Text } from "@chakra-ui/react";
-import { ITodo } from "../interface";
+import { Todo } from "../interface";
 import { iconStyle } from "../style";
 
-export default function ToDoList({
+export default function TodoList({
   todos,
   setTodos,
   count,
   setCount,
 }: {
-  todos: ITodo[];
-  setTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Array<Todo>>>;
   count: number;
   setCount: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const checked = (input: ITodo) => {
-    if (input.isChecked) {
-      input.isChecked = false;
+  function checked(todo: Todo) {
+    if (todo.isChecked) {
+      todo.isChecked = false;
       setCount(count - 1);
     } else {
-      input.isChecked = true;
+      todo.isChecked = true;
       setCount(count + 1);
     }
-  };
+  }
 
-  const deleteTask = (input: ITodo) => {
-    setTodos(todos.filter((task) => task.todo !== input.todo));
-    input.isChecked && setCount(count - 1);
-  };
+  function deleteTodo(todo: Todo) {
+    setTodos(todos.filter((t) => t.content !== todo.content));
+    todo.isChecked && setCount(count - 1);
+  }
 
   return (
     <VStack spacing={1} align="strecth" sx={{ mx: "30%" }}>
-      {todos.map((item, index) => (
+      {todos.map((todo, index) => (
         <HStack
           key={index}
           sx={{ justifyContent: "space-between", p: 1, borderRadius: "md" }}
         >
           <Checkbox
-            isChecked={item.isChecked}
-            onChange={() => checked(item)}
+            isChecked={todo.isChecked}
+            onChange={() => checked(todo)}
             colorScheme="green"
             sx={{ borderColor: "#8fc29d" }}
           >
-            {item.isChecked ? (
+            {todo.isChecked ? (
               <Text sx={{ pl: "25px", textDecoration: "line-through" }}>
-                {item.todo}
+                {todo.content}
               </Text>
             ) : (
-              <Text sx={{ pl: "25px" }}>{item.todo}</Text>
+              <Text sx={{ pl: "25px" }}>{todo.content}</Text>
             )}
           </Checkbox>
           <IconButton
-            onClick={() => deleteTask(item)}
+            onClick={() => deleteTodo(todo)}
             aria-label="Delete task"
             icon={<DeleteIcon />}
             colorScheme="red"

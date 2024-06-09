@@ -1,4 +1,4 @@
-export interface ITodo {
-    todo: string;
+export interface Todo {
+    content: string;
     isChecked: boolean;
 }
